@@ -1,21 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
-import cors from 'cors';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(helmet())
-  app.use(cors())
+  app.enableCors();
+  app.use(helmet());
   const config = new DocumentBuilder()
     .setTitle('Fast Events')
     .setDescription('The Fast Events documentation API')
     .setVersion('1.0')
-    .addTag('users')
+    // .addTag('API')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
   await app.listen(3000);
 }
 bootstrap();
