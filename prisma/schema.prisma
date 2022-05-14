@@ -16,4 +16,11 @@ model User {
   email    String  @unique
   password String
   name     String?
+  roles    Role[]
+}
+
+enum Role {
+  ADMIN
+  PARTICIPANT
+  PROMOTER
 }
