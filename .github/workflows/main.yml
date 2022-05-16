@@ -1,4 +1,4 @@
-ame: Node.js CI
+name: Node.js CI
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
       - run: npm test
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/fast_test?schema=public
-          SHADOW_DATABASE_URL: 
+          SHADOW_DATABASE_URL:
           # DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
