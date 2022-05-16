@@ -33,7 +33,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm install -g @nestjs/cli
-      - run: npm run build --if-present
+      # - run: npm run build --if-present
       - run: npm test
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/fast_test?schema=public
