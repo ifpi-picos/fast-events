@@ -10,7 +10,6 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-//import { User as UserModel } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -23,17 +22,7 @@ export class UsersController {
 
   @Get('/all')
   findAll() {
-    try {
-      const usrs = this.usersService.findAll();
-      if (usrs) {
-        return {
-          data: usrs,
-          messsage: 'success',
-        };
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    return this.usersService.findAll();
   }
 
   @Get(':id')
