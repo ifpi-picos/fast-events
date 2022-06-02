@@ -5,12 +5,15 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './roles/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { EventsModule } from './events/events.module';
+import { PrismaMongoService } from './prisma2.service';
 
 @Module({
-  imports: [UsersModule, AuthModule],
+  imports: [UsersModule, AuthModule, EventsModule],
   controllers: [AppController],
   providers: [
     AppService,
+    PrismaMongoService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard,

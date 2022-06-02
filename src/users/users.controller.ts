@@ -15,18 +15,18 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../roles/roles.decorator';
 
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles(Role.ADMIN)
+  //@Roles(Role.ADMIN)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Roles(Role.ADMIN)
+  //@Roles(Role.ADMIN)
   @Get('/')
   findAll() {
     return this.usersService.findAll();

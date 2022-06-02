@@ -1,0 +1,18 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("MONGO_DB")
+
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated/client2"
+}
+
+model Event {
+    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    slug        String @unique
+    title       String
+    description String
+    author      Json
+}
