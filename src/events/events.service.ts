@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { PrismaMongoService } from '../prisma2.service';
-import { PrismaService } from '../prisma.service';
+import { PrismaMongoService } from '../prisma-mongo.service';
+import { PrismaPostgresService } from '../prisma-postgres.service';
 
 @Injectable()
 export class EventsService {
   constructor(
     private mongo: PrismaMongoService,
-    private postgres: PrismaService,
+    private postgres: PrismaPostgresService,
   ) {}
 
   createSlug(str: string) {
@@ -41,7 +41,7 @@ export class EventsService {
       if (user) {
         delete user['password'];
       } else {
-        return [];
+        return null;
       }
 
       return this.mongo.event.create({
@@ -52,13 +52,23 @@ export class EventsService {
           author: user,
         },
       });
-    } catch (e) {
-      return e;
+    } catch (err) {
+      throw new HttpException(
+        'Ocorreu um erro ao solicitar o seu pedido',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
   async findAll() {
-    return this.mongo.event.findMany();
+    try {
+      return this.mongo.event.findMany();
+    } catch (err) {
+      throw new HttpException(
+        'Ocorreu um erro ao solicitar o seu pedido',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async findOne(id: string) {
@@ -68,12 +78,15 @@ export class EventsService {
           id: id,
         },
       });
-    } catch (e) {
-      return [];
+    } catch (err) {
+      throw new HttpException(
+        'Ocorreu um erro ao solicitar o seu pedido',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
-  async update(id: string, updateEventDto: UpdateEventDto) {
+  update(id: string, updateEventDto: UpdateEventDto) {
     try {
       return this.mongo.event.update({
         where: {
@@ -85,8 +98,11 @@ export class EventsService {
           slug: this.createSlug(updateEventDto.title),
         },
       });
-    } catch (e) {
-      return e;
+    } catch {
+      throw new HttpException(
+        'Ocorreu um erro ao solicitar o seu pedido',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -97,8 +113,11 @@ export class EventsService {
           id: id,
         },
       });
-    } catch (e) {
-      return e;
+    } catch (err) {
+      throw new HttpException(
+        'Ocorreu um erro ao solicitar o seu pedido',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

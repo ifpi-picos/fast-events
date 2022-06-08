@@ -1,11 +1,11 @@
-import { PrismaClient } from '../prisma2/generated/client2';
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaMongoService extends PrismaClient implements OnModuleInit {
+export class PrismaPostgresService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
-    console.log('Database Mongo connection has been established.');
+    console.log('Database Postgres connection has been established.');
   }
 
   async enableShutdownHooks(app: INestApplication) {

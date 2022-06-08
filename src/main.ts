@@ -4,8 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { PrismaService } from './prisma.service';
-import { PrismaMongoService } from './prisma2.service';
+import { PrismaPostgresService } from './prisma-postgres.service';
+import { PrismaMongoService } from './prisma-mongo.service';
+import { HttpExceptionFilter } from './exceptions/http-excepetion.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,8 +21,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
 
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   //primsa
-  const dbService: PrismaService = app.get(PrismaService);
+  const dbService: PrismaPostgresService = app.get(PrismaPostgresService);
   dbService.enableShutdownHooks(app);
 
   const dbMongoService: PrismaMongoService = app.get(PrismaMongoService);
