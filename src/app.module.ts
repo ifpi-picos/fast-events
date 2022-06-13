@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -9,9 +9,30 @@ import { EventsModule } from './events/events.module';
 import { PrismaMongoService } from './prisma-mongo.service';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './exceptions/http-excepetion.filter';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { LoggerMiddleware } from './access/LoggerMiddleware';
+import { AccessModule } from './access/access.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, EventsModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    EventsModule,
+    RedisModule.forRoot({
+      readyLog: true,
+      config: {
+        url: process.env.REDIS_DB,
+
+        onClientCreated(client) {
+          client.on('error', (err) => {
+            console.log(err);
+          });
+        },
+      },
+    }),
+    AccessModule,
+  ],
+
   controllers: [AppController],
   providers: [
     AppService,
@@ -26,4 +47,8 @@ import { HttpExceptionFilter } from './exceptions/http-excepetion.filter';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

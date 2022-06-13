@@ -67,8 +67,8 @@ const regularDirname = hasDirname && fs.existsSync(path.join(__dirname, 'schema.
 
 // if the client has been bundled, we need to look for the folders
 const foundDirname = !regularDirname && findSync(process.cwd(), [
-    "prisma2\\generated\\client2",
     "generated\\client2",
+    "client2",
 ], ['d'], ['d'], 1)[0]
 
 const dirname = regularDirname || foundDirname || __dirname
@@ -117,7 +117,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\WildysonDantas\\Documents\\Especialização\\2022.2\\Programação Back-end\\fast-events\\prisma2\\generated\\client2",
+      "value": "C:\\Users\\WildysonDantas\\Documents\\Especialização\\2022.2\\Programação Back-end\\fast-events\\prisma_mongo\\generated\\client2",
       "fromEnvVar": null
     },
     "config": {
@@ -128,8 +128,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "..\\..\\..\\.env",
-    "schemaEnvPath": "..\\..\\..\\.env"
+    "rootEnvPath": "..\\..\\..\\.env"
   },
   "relativePath": "..\\..",
   "clientVersion": "3.12.0",
@@ -156,6 +155,6 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma2\\generated\\client2\\query_engine-windows.dll.node")
+path.join(process.cwd(), "generated\\client2\\query_engine-windows.dll.node")
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "prisma2\\generated\\client2\\schema.prisma")
+path.join(process.cwd(), "generated\\client2\\schema.prisma")
